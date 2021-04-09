@@ -401,7 +401,8 @@ namespace {
         $website_username = false,
         $website_password = false,
         $request_method = null,
-        $post_field = null
+        $post_field = null,
+        $http_header = null
     ) {
         ($timeout === null || $timeout > 0) ? PSM_CURL_TIMEOUT : intval($timeout);
 
@@ -420,7 +421,11 @@ namespace {
         curl_setopt($ch, CURLOPT_ENCODING, '');
         curl_setopt($ch, CURLOPT_CERTINFO, 1);
         curl_setopt($ch, CURLOPT_COOKIEFILE, '');
-
+    
+        if (!empty($http_header)) {
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $http_header);
+        }
+        
         if (!empty($request_method)) {
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $request_method);
         }
