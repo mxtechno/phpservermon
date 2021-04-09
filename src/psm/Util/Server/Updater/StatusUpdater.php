@@ -238,6 +238,12 @@ class StatusUpdater
 
         // We're only interested in the header, because that should tell us plenty!
         // unless we have a pattern to search for!
+        $http_header = [];
+        if($this->server['header_name'] != '' && $this->server['header_value'] != '')
+        {
+            $http_header = array($this->server['header_name']=>$this->server['header_value']);
+        }
+        
         $curl_result = psm_curl_get(
             $this->server['ip'],
             true,
@@ -248,7 +254,8 @@ class StatusUpdater
             psm_password_decrypt($this->server['server_id'] .
                 psm_get_conf('password_encrypt_key'), $this->server['website_password']),
             $this->server['request_method'],
-            $this->server['post_field']
+            $this->server['post_field'],
+            $http_header
         );
         $this->header = $curl_result['exec'];
         $this->curl_info = $curl_result['info'];
